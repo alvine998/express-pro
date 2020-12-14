@@ -12,6 +12,7 @@ app.get("/", (req, res) => {
 });
 
 require("./routes/user.route.js")(app);
+require("./routes/pengguna.route.js")(app);
 
 
 app.listen(3000, () => {
