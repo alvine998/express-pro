@@ -52,4 +52,57 @@ const User = function(user) {
     });
   };
 
+
+  User.updateById = (id, user, result) => {
+    sql.query(
+      "update pegawai set pegawai_nama = ?, pegawai_gaji = ? where pegawai_id = ?",
+      [user.pegawai_nama, user.pegawai_gaji, id],
+      (err,res) => {
+        if(err){
+          console.log("error : ", err);
+          result(null,err);
+          return;
+        }
+
+        if(res.affectedRows == 0) {
+          result({kind: "not_found"}, null);
+          return;
+        }
+
+        console.log("Updated user: ", {id:id, ...user});
+        result(null, {id: id, ...user});
+      }
+    );
+  };
+
+  User.remove = (id,result) => {
+    sql.query("delete from pegawai where pegawai_id = ?", id, (err,res) => {
+      if(err) {
+        console.log("error: ", err);
+        result(null,err);
+        return;
+      }
+
+      if(res.affectedRows == 0) {
+        result({kind: "not_found"}, null);
+        return;
+      }
+
+      console.log("deleted user with id: ", id);
+      result(null,res);
+    });
+  };
+
+  User.removeAll = result => {
+    sql.query("delete from pegawai", (err,res) => {
+      if(err) {
+        console.log("error: ", err);
+        result(null,err);
+        return;
+      }
+
+      console.log('deleted ${res.affectedRows} pegawai');
+      result(null,res);
+    })
+  }
   module.exports = User;
