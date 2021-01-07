@@ -2,6 +2,7 @@ const sql = require("./db.js");
 
 // constructor
 const Bank = function(bank) {
+    this.id = bank.id;
     this.no_rekening = bank.no_rekening;
     this.nama_rekening = bank.nama_rekening;
     this.nama_bank = bank.nama_bank;
@@ -22,7 +23,7 @@ const Bank = function(bank) {
   };
 
   Bank.findById = (bankId, result) => {
-    sql.query(`SELECT * FROM bank_akun WHERE no_rekening = ${bankId}`, (err, res) => {
+    sql.query(`SELECT * FROM bank_akun WHERE id = ${bankId}`, (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
@@ -54,10 +55,10 @@ const Bank = function(bank) {
   };
 
 
-  Bank.updateById = (no_rekening, bank, result) => {
+  Bank.updateById = (id, bank, result) => {
     sql.query(
-      "update bank_akun set nama_rekening = ?, nama_bank = ?, logo_bank = ? where no_rekening = ?",
-      [bank.nama_rekening, bank.nama_bank, bank.logo_bank, no_rekening],
+      "update bank_akun set no_rekening = ?, nama_rekening = ?, nama_bank = ?, logo_bank = ? where id = ? ",
+      [bank.no_rekening, bank.nama_rekening, bank.nama_bank, bank.logo_bank, id],
       (err,res) => {
         if(err){
           console.log("error : ", err);
@@ -70,14 +71,14 @@ const Bank = function(bank) {
           return;
         }
 
-        console.log("Updated akun bank: ", {no_rekening:no_rekening, ...bank});
-        result(null, {no_rekening: no_rekening, ...bank});
+        console.log("Updated akun bank: ", {id:id, ...bank});
+        result(null, {id: id, ...bank});
       }
     );
   };
 
-  Bank.remove = (no_rekening,result) => {
-    sql.query("delete from bank_akun where no_rekening = ?", no_rekening, (err,res) => {
+  Bank.remove = (id,result) => {
+    sql.query("delete from bank_akun where id = ?", id, (err,res) => {
       if(err) {
         console.log("error: ", err);
         result(null,err);
@@ -89,7 +90,7 @@ const Bank = function(bank) {
         return;
       }
 
-      console.log("Hapis akun bank dengan no rekening: ", no_rekening);
+      console.log("Hapus akun bank dengan id: ", no_rekening);
       result(null,res);
     });
   };

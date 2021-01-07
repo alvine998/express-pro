@@ -1,4 +1,4 @@
-const Bank = require("../models/bank.model.js");
+const Hotel = require("../models/hotel.model.js");
 
 // Create and Save a new Bank
 exports.create = (req, res) => {
@@ -8,17 +8,24 @@ exports.create = (req, res) => {
         });
       }
     
-      // Create a Bank
-      const bank = new Bank({
+      // Create a Hotel
+      const hotel = new Hotel({
         id: req.body.id,
-        no_rekening : req.body.no_rekening,
-        nama_rekening: req.body.nama_rekening,
-        nama_bank: req.body.nama_bank,
-        logo_bank: req.body.logo_bank
+        kategori : req.body.kategori,
+        id_manager: req.body.id_manager,
+        nama_hotel: req.body.nama_hotel,
+        rating: req.body.rating,
+        alamat: req.body.alamat,
+        longitude: req.body.longitude,
+        latitude: req.body.latitude,
+        longlat: req.body.longlat,
+        deskripsi: req.body.deskripsi,
+        kamar_aktif: req.body.kamar_aktif,
+        foto: req.body.foto,
       });
     
-      // Save Bank in the database
-      Bank.create(bank, (err, data) => {
+      // Save Hotel in the database
+      Hotel.create(hotel, (err, data) => {
         if (err)
           res.status(500).send({
             message:
@@ -30,7 +37,7 @@ exports.create = (req, res) => {
 
 // Retrieve all Bank from the database.
 exports.findAll = (req, res) => {
-    Bank.getAll((err, data) => {
+    Hotel.getAll((err, data) => {
         if (err)
           res.status(500).send({
             message:
@@ -40,17 +47,17 @@ exports.findAll = (req, res) => {
       });
 };
 
-// Find a single Bank with a bankId
+// Find a single Hotel with a hotelId
 exports.findOne = (req, res) => {
-    Bank.findById(req.params.bankId, (err, data) => {
+    Hotel.findById(req.params.hotelId, (err, data) => {
         if (err) {
           if (err.kind === "not_found") {
             res.status(404).send({
-              message: `Not found Bank with no rekening ${req.params.bankId}.`
+              message: `Not found Bank with no rekening ${req.params.hotelId}.`
             });
           } else {
             res.status(500).send({
-              message: "Error retrieving bank with id " + req.params.bankId
+              message: "Error retrieving bank with id " + req.params.hotelId
             });
           }
         } else res.send(data);
@@ -65,18 +72,18 @@ exports.update = (req,res) => {
     });
   }
 
-  Bank.updateById(
-    req.params.bankId,
-    new Bank(req.body),
+  Hotel.updateById(
+    req.params.hotelId,
+    new Hotel(req.body),
     (err, data) => {
       if(err){
         if(err.kind === 'not_found'){
           res.status(404).send({
-            message: "not found bank with no rekening ${req.params.bankId}."
+            message: "not found bank with no rekening " + req.params.hotelId
           });
         } else {
           res.status(500).send({
-            message: "Error updating bank with no rekening" + req.params.bankId
+            message: "Error updating bank with no rekening" + req.params.hotelId
           });
         }
       } else res.send(data);
@@ -86,28 +93,28 @@ exports.update = (req,res) => {
 
 //deleted an object
 exports.delete = (req,res) => {
-  Bank.remove(req.params.bankId, (err, data) => {
+  Hotel.remove(req.params.hotelId, (err, data) => {
     if(err){
       if(err.kind === 'not_found'){
         res.status(404).send({
-          message: "not found bank with id " + req.params.bankId
+          message: "not found Hotel with id " + req.params.hotelId
         });
       } else {
         res.status(500).send({
-          message: "Error deleting bank with id" + req.params.bankId
+          message: "Error deleting Hotel with id" + req.params.hotelId
         });
       }
-    } else res.send({message: "Bank account was deleted"});
+    } else res.send({message: "Hotel account was deleted"});
   });
 };
 
 exports.deleteAll = (req,res) => {
-  Bank.removeAll((err, data) => {
+  Hotel.removeAll((err, data) => {
     if(err)
       res.status(500).send({
-        message: err.message || "Some error occured while removing all bank"
+        message: err.message || "Some error occured while removing all hotel"
       });
-    else res.send({message: "All bank were deleted successfully"});
+    else res.send({message: "All hotel were deleted successfully"});
   });
 };
 
