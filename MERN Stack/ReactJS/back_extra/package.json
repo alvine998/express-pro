@@ -1,0 +1,25 @@
+{
+  "name": "back_extra",
+  "version": "1.0.0",
+  "description": "Backend for extranet carikamar",
+  "main": "server.js",
+  "scripts": {
+    "extranett-install": "npm install --prefix extranett",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "extranet": "npm start --prefix extranett",
+    "dev": "concurrently \"npm run server\" \"npm run extranet\" "
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "concurrently": "^5.3.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.14",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
